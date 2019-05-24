@@ -7,6 +7,8 @@ import com.codeL.gray.activemq.p.strategy.uid.UidTypeConverter;
 import com.codeL.gray.activemq.p.strategy.uip.UipSelector;
 import com.codeL.gray.activemq.p.strategy.uip.UipTypeConverter;
 import com.codeL.gray.common.convert.TypeHolder;
+import com.codeL.gray.core.support.condition.AutoCondition;
+import com.codeL.gray.core.support.condition.strategy.Calculation;
 import com.codeL.gray.core.watch.FileWatchDog;
 import com.codeL.gray.core.watch.WatchDog;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +25,7 @@ import javax.annotation.PostConstruct;
  * 2019/5/24 15:23
  */
 @Conditional({AutoCondition.class})
+@Calculation(value = "com.codeL.gray.auto.ActiveMqP")
 public class ImportGrayActiveMqPConfiguration {
 
     @Bean

@@ -2,6 +2,8 @@ package com.codeL.gray.dubbo.support;
 
 import com.codeL.gray.common.convert.TypeConverterDelegate;
 import com.codeL.gray.common.convert.TypeHolder;
+import com.codeL.gray.core.support.condition.AutoCondition;
+import com.codeL.gray.core.support.condition.strategy.Calculation;
 import com.codeL.gray.core.watch.FileWatchDog;
 import com.codeL.gray.core.watch.WatchDog;
 import com.codeL.gray.dubbo.loadbalance.LoadBalanceAwarer;
@@ -24,6 +26,7 @@ import javax.annotation.PostConstruct;
  * 2019/5/24 15:23
  */
 @Conditional({AutoCondition.class})
+@Calculation(value = "com.codeL.gray.auto.Dubbo")
 public class ImportGrayDubboConfiguration {
 
     @Bean
