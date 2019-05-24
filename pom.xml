@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.codeL</groupId>
+    <artifactId>gray_route</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>gray_route_core</module>
+        <module>gray_route_dubbo</module>
+        <module>gray_route_activemq</module>
+        <module>gray_route_bom</module>
+        <module>gray_route_common</module>
+        <module>gray_route_dubbo_support</module>
+        <module>gray_route_activemq_support</module>
+        <module>gray_route_core_support</module>
+        <module>gray_auto_detect_bom</module>
+    </modules>
+    <packaging>pom</packaging>
+    <name>gray_route</name>
+
+    <properties>
+        <lombok.version>1.16.20</lombok.version>
+        <slf4j.version>1.7.25</slf4j.version>
+        <springframework.version>4.3.13.RELEASE</springframework.version>
+        <fastjson.version>1.2.35</fastjson.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <version>${springframework.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>

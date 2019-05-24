@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>gray_route</artifactId>
+        <groupId>com.codeL</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>gray_auto_detect_bom</artifactId>
+    <packaging>pom</packaging>
+    <organization>
+        <name>servyou</name>
+    </organization>
+    <modules>
+        <module>gray_auto_dubbo</module>
+        <module>gray_auto_activemq_p</module>
+        <module>gray_auto_activemq_c</module>
+        <module>gray_auto_conf</module>
+    </modules>
+    <scm>
+    </scm>
+    <developers>
+        <developer>
+            <id>lhj</id>
+            <name>laihj</name>
+            <email>laihj@servyou.com.cn</email>
+            <organization>servyou</organization>
+            <roles>
+                <role>main developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+
+    <distributionManagement>
+        <repository>
+            <id>xinxi</id>
+            <name>xinxi</name>
+            <url>http://10.64.1.13/nexus/content/repositories/xinxi</url>
+        </repository>
+        <snapshotRepository>
+            <id>xinxi-snapshot</id>
+            <name>xinxi-snapshot</name>
+            <url>http://10.64.1.13/nexus/content/repositories/xinxi-snapshot</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.codeL</groupId>
+                <artifactId>gray_auto_dubbo</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.codeL</groupId>
+                <artifactId>gray_auto_activemq_p</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.codeL</groupId>
+                <artifactId>gray_auto_activemq_c</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.codeL</groupId>
+                <artifactId>gray_auto_conf</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>
