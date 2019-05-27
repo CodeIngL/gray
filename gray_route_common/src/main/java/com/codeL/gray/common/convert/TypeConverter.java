@@ -10,4 +10,11 @@ package com.codeL.gray.common.convert;
  */
 public interface TypeConverter<S, T> {
     T convert(S source);
+
+    default boolean isEmpty(T t) {
+        if (t == null) {
+            return false;
+        }
+        return true;
+    }
 }
