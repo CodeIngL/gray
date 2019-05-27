@@ -15,7 +15,7 @@ import static com.codeL.gray.core.GrayStatus.Open;
 /**
  * <p>Description: </p>
  * <p>write with codeL</p>
- * <p>contact <code>codeLHJ@163.COM</code></p>
+ * <p>contact <code>codeLHJ@163.com</code></p>
  *
  * @author laihj
  * 2019/5/24 15:23
@@ -30,9 +30,6 @@ public class HttpURLStatusCheck implements StatusCheck {
 
     public HttpURLStatusCheck(String urlCheck) {
         this.urlCheck = urlCheck;
-    }
-
-    public HttpURLStatusCheck() {
     }
 
     @Override

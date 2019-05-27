@@ -12,7 +12,7 @@ import static com.codeL.gray.core.context.GrayContextBinder.getGlobalGrayContext
 /**
  * <p>Description: </p>
  * <p>write with codeL</p>
- * <p>contact <code>codeLHJ@163.COM</code></p>
+ * <p>contact <code>codeLHJ@163.com</code></p>
  *
  * @author laihj
  * 2019/5/24 15:23
@@ -27,7 +27,7 @@ public class GrayBeanFactoryAwarer {
     @Scheduled(cron = "0 */1 * * * ?")
     public void wrapper() {
         /**
-         * ��ʼ��-1.ope
+         * 开始是-1.ope
          */
         GrayContext context = getGlobalGrayContext();
         if (!DefaultGrayContext.class.isAssignableFrom(context.getClass())) {

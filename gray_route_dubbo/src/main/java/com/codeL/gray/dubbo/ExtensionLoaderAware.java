@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * <p>Description: </p>
  * <p>write with codeL</p>
- * <p>contact <code>codeLHJ@163.COM</code></p>
+ * <p>contact <code>codeLHJ@163.com</code></p>
  *
  * @author laihj
  * 2019/5/24 15:23
@@ -31,7 +31,7 @@ public abstract class ExtensionLoaderAware<T> {
     }
 
     /**
-     * �ݵ�
+     * 我们通过wrapper进行构造，anyway，扩展类总是存在于我们的应用访问中
      */
     @PostConstruct
     public void wrapper() {
@@ -67,6 +67,11 @@ public abstract class ExtensionLoaderAware<T> {
         }
     }
 
+    /**
+     * for subclass to implements,wrapper
+     * @param ts
+     * @return
+     */
     protected abstract WrapperResult<T> doWrapper(List<T> ts);
 
     @Data

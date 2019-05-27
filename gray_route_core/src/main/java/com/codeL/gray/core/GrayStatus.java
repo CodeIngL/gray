@@ -5,7 +5,7 @@ import lombok.Getter;
 /**
  * <p>Description: </p>
  * <p>write with codeL</p>
- * <p>contact <code>codeLHJ@163.COM</code></p>
+ * <p>contact <code>codeLHJ@163.com</code></p>
  *
  * @author laihj
  * 2019/5/24 15:23
@@ -14,11 +14,11 @@ import lombok.Getter;
 public enum GrayStatus {
 
     /**
-     * �ر�״̬
+     * 关闭状态
      */
     Close(false, "closed"),
     /**
-     * ����״̬
+     * 开启状态
      */
     Open(true, "opened");
 

@@ -3,7 +3,7 @@ package com.codeL.gray.common.http;
 /**
  * <p>Description: </p>
  * <p>write with codeL</p>
- * <p>contact <code>codeLHJ@163.COM</code></p>
+ * <p>contact <code>codeLHJ@163.com</code></p>
  *
  * @author laihj
  * 2019/5/24 15:23
@@ -11,10 +11,10 @@ package com.codeL.gray.common.http;
 public class Response {
 
 
-    public static final  String CODE_SUCCESS = "00000000";
+    public static final String CODE_SUCCESS = "00000000";
 
     /**
-     * head : {"code":"00000000","description":"�ɹ�","msg":"�ɹ�","time":"2019-04-10 15:19:34","status":"Y"}
+     * head : {"code":"00000000","description":"成功","msg":"成功","time":"2019-04-10 15:19:34","status":"Y"}
      * body : null
      */
 
@@ -40,8 +40,8 @@ public class Response {
     public static class HeadBean {
         /**
          * code : 00000000
-         * description : �ɹ�
-         * msg : �ɹ�
+         * description : 成功
+         * msg : 成功
          * time : 2019-04-10 15:19:34
          * status : Y
          */

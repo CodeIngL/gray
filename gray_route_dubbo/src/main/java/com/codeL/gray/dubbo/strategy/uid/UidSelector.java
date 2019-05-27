@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * <p>Description: </p>
  * <p>write with codeL</p>
- * <p>contact <code>codeLHJ@163.COM</code></p>
+ * <p>contact <code>codeLHJ@163.com</code></p>
  *
  * @author laihj
  * 2019/5/24 15:23
@@ -27,6 +27,14 @@ public class UidSelector<T> extends AbstractSelector<T> {
         super(typeConverter);
     }
 
+    /**
+     *  deal with invoker using one policy
+     * @param invokers
+     * @param url
+     * @param invocation
+     * @param policy
+     * @return
+     */
     @Override
     protected IndexedInvoker<T> doSelect(List<Invoker<T>> invokers, URL url, Invocation invocation, Policy policy) {
         DubboUidPolicy dubboPolicy = (DubboUidPolicy) getTypeConverter().convert(policy);
@@ -34,7 +42,6 @@ public class UidSelector<T> extends AbstractSelector<T> {
             return null;
         }
         Map<String, UidSets> uidSetsMap = dubboPolicy.getDivdata();
-        IndexedInvoker result = null;
         String keyId = GrayEnvContextBinder.getGlobalGrayEnvContext().get("userId");
         int index = -1;
         for (Invoker invoker : invokers) {
@@ -49,6 +56,6 @@ public class UidSelector<T> extends AbstractSelector<T> {
                 return new IndexedInvoker(invoker, ++index, false);
             }
         }
-        return result;
+        return null;
     }
 }

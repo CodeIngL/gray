@@ -1,25 +1,21 @@
 package com.codeL.gray.core.watch;
 
-import com.codeL.gray.common.ServerTypeHolder;
 import com.codeL.gray.common.http.Response;
 import com.codeL.gray.core.GrayStatus;
-import com.codeL.gray.core.GrayType;
 import com.codeL.gray.core.check.remote.HttpURLStatusCheck;
-import com.codeL.gray.core.constant.DivSteps;
 import com.codeL.gray.core.context.DefaultGrayContext;
-import com.codeL.gray.core.strategy.Policy;
+import com.codeL.gray.core.meta.DefaultMetaReader;
 import com.codeL.gray.core.strategy.PolicyGroup;
 import com.codeL.gray.core.util.HttpUtils;
 import com.alibaba.fastjson.JSONObject;
+import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -31,7 +27,7 @@ import static com.codeL.gray.core.context.GrayContextBinder.bindGlobalGrayContex
 /**
  * <p>Description: </p>
  * <p>write with codeL</p>
- * <p>contact <code>codeLHJ@163.COM</code></p>
+ * <p>contact <code>codeLHJ@163.com</code></p>
  *
  * @author laihj
  * 2019/5/24 15:23
@@ -63,7 +59,6 @@ public class HttpURLWatchDog extends AbstractWatchDog {
                 return;
             }
             GrayStatus status;
-            GrayType type = null;
             PolicyGroup policyGroup = null;
             Reporter reporter = new Reporter(url);
             try {
@@ -71,33 +66,35 @@ public class HttpURLWatchDog extends AbstractWatchDog {
                 switch (status) {
                     case Close:
                         bindGlobalGrayContext(DEFAULT_GRAY_CONTEXT);
-                        reporter.report(false);
+                        reporter.reportNodeStatus(false);
                         return;
                     default:
                 }
                 String policyGroupStr = fetch.fetch();
                 if (policyGroupStr != null && !"".equals(policyGroupStr)) {
-                    policyGroup = buildPolicyGroup(JSONObject.parseObject(policyGroupStr, InternalPolicyGroup.class));
+                    byte[] bytes = policyGroupStr.getBytes();
+                    ByteInputStream inputStream = new ByteInputStream(bytes, bytes.length);
+                    policyGroup = new DefaultMetaReader().readPolicyGroup(inputStream);
                 }
             } catch (Exception e) {
                 log.warn("something wrong happen.", e);
                 bindGlobalGrayContext(DEFAULT_GRAY_CONTEXT);
-                reporter.report(false);
+                reporter.reportNodeStatus(false);
                 return;
             }
             if (policyGroup == null) {
                 log.error("error status. gray is open. but no meta");
                 bindGlobalGrayContext(DEFAULT_GRAY_CONTEXT);
-                reporter.report(false);
+                reporter.reportNodeStatus(false);
                 return;
             }
             if (status != new HttpURLStatusCheck(url).checkStatus()) {
                 bindGlobalGrayContext(DEFAULT_GRAY_CONTEXT);
-                reporter.report(false);
+                reporter.reportNodeStatus(false);
                 return;
             }
-            reporter.report(true);
-            bindGlobalGrayContext(new DefaultGrayContext(policyGroup, type == null ? U : type, status, fetch.changed ? index.getAndIncrement() : index.get()));
+            reporter.reportNodeStatus(true);
+            bindGlobalGrayContext(new DefaultGrayContext(policyGroup, U, status, fetch.changed ? index.getAndIncrement() : index.get()));
         };
     }
 
@@ -111,7 +108,7 @@ public class HttpURLWatchDog extends AbstractWatchDog {
             this.url = url;
         }
 
-        boolean report(Boolean status) {
+        boolean reportNodeStatus(Boolean status) {
             Map<String, String> parameters = new HashMap<String, String>();
             parameters.put("status", String.valueOf(status));
             try {
@@ -190,46 +187,6 @@ public class HttpURLWatchDog extends AbstractWatchDog {
         }
     }
 
-    public static class InternalPolicyGroup {
-        @Setter
-        @Getter
-        private Map<String, Policy> group;
-    }
-
-    public PolicyGroup buildPolicyGroup(InternalPolicyGroup internalPolicyGroup) {
-        try {
-            if (internalPolicyGroup == null) {
-                return null;
-            }
-            Map<String, Policy> policyMap = internalPolicyGroup.getGroup();
-            if (policyMap == null || policyMap.size() == 0) {
-                return null;
-            }
-            PolicyGroup policyGroup = new PolicyGroup();
-            Map<ServerTypeHolder, List<Policy>> resultMap = policyGroup.getGroup();
-            for (String divstep : DivSteps.divsteps) {
-                Policy policy = policyMap.get(divstep);
-                if (policy == null) {
-                    continue;
-                }
-                String serverType = policy.getServertype();
-                ServerTypeHolder serverTypeHolder = new ServerTypeHolder(serverType);
-                if (resultMap.containsKey(serverTypeHolder)) {
-                    List<Policy> singles = resultMap.get(serverTypeHolder);
-                    singles.add(policy);
-                    continue;
-                }
-                List<Policy> singles = new ArrayList<>();
-                singles.add(policy);
-                resultMap.put(serverTypeHolder, singles);
-            }
-            return policyGroup;
-        } catch (Exception e) {
-            log.error("read policyGroup error", e);
-        }
-        return null;
-    }
-
 
     public static void main(String[] args) {
 
@@ -272,7 +229,8 @@ public class HttpURLWatchDog extends AbstractWatchDog {
                 "\t\t}\n" +
                 "\t}\n" +
                 "}";
-        PolicyGroup policyGroup = new HttpURLWatchDog().buildPolicyGroup(JSONObject.parseObject(policyGroupStr, InternalPolicyGroup.class));
+        ByteInputStream inputStream = new ByteInputStream(policyGroupStr.getBytes(), policyGroupStr.getBytes().length);
+        PolicyGroup policyGroup = new DefaultMetaReader().readPolicyGroup(inputStream);
         System.out.println(123);
     }
 }

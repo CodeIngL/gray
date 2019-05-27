@@ -20,7 +20,7 @@ import static com.codeL.gray.core.context.GrayContextBinder.getGlobalGrayContext
 /**
  * <p>Description: </p>
  * <p>write with codeL</p>
- * <p>contact <code>codeLHJ@163.COM</code></p>
+ * <p>contact <code>codeLHJ@163.com</code></p>
  *
  * @author laihj
  * 2019/5/24 15:23
@@ -28,6 +28,8 @@ import static com.codeL.gray.core.context.GrayContextBinder.getGlobalGrayContext
 public class Extractor {
 
     private static final String ACTIVE_MQ_SERVER_TYPE = "activemq:" + P.name();
+
+    private static final String ACTIVE_MQ_SERVER_TYPE_PREFIX = ACTIVE_MQ_SERVER_TYPE + ":";
 
     private static final ConcurrentHashMap<TypeHolder, Selector> mappingSelector = new ConcurrentHashMap<>();
 
@@ -46,9 +48,11 @@ public class Extractor {
             return null;
         }
         List<Selector> chociedSelectors = new ArrayList<>();
-        String prefix = ACTIVE_MQ_SERVER_TYPE + ":";
+        /**
+         * if config error we do nothing rather then filter some correct config
+         */
         for (Policy policy : usedPolicy) {
-            TypeHolder typeHolder = new TypeHolder(prefix + policy.getDivtype());
+            TypeHolder typeHolder = new TypeHolder(ACTIVE_MQ_SERVER_TYPE_PREFIX + policy.getDivtype());
             Selector selector = mappingSelector.get(typeHolder);
             if (selector == null) {
                 return null;

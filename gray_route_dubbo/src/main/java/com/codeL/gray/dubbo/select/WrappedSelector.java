@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * <p>Description: </p>
  * <p>write with codeL</p>
- * <p>contact <code>codeLHJ@163.COM</code></p>
+ * <p>contact <code>codeLHJ@163.com</code></p>
  *
  * @author laihj
  * 2019/5/24 15:23
@@ -28,9 +28,6 @@ public class WrappedSelector implements Selector {
 
     @Override
     public IndexedInvoker select(List list, URL url, Invocation invocation, Policy policy) {
-        if (policy == null) {
-            return selector.select(list, url, invocation, this.policy);
-        }
-        return selector.select(list, url, invocation, policy);
+        return selector.select(list, url, invocation, policy == null ? this.policy : policy);
     }
 }

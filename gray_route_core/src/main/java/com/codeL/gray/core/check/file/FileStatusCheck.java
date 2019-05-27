@@ -9,7 +9,7 @@ import java.io.File;
 /**
  * <p>Description: </p>
  * <p>write with codeL</p>
- * <p>contact <code>codeLHJ@163.COM</code></p>
+ * <p>contact <code>codeLHJ@163.com</code></p>
  *
  * @author laihj
  * 2019/5/24 15:22
@@ -17,9 +17,9 @@ import java.io.File;
 @Slf4j
 public class FileStatusCheck implements StatusCheck {
 
-    public static final String STATUS_CHECK_PATH = "/usr/serveryou/grays/status.check";
+    public static final String STATUS_CHECK_PATH = "/usr/grays/status.check";
 
-    public static final String META_PATH = "/usr/serveryou/grays/meta";
+    public static final String META_PATH = "/usr/grays/meta";
 
     public GrayStatus checkStatus() {
         File file = new File(STATUS_CHECK_PATH);

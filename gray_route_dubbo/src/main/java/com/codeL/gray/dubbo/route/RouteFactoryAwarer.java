@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * <p>Description: </p>
  * <p>write with codeL</p>
- * <p>contact <code>codeLHJ@163.COM</code></p>
+ * <p>contact <code>codeLHJ@163.com</code></p>
  *
  * @author laihj
  * 2019/5/24 15:23
@@ -28,17 +28,17 @@ public class RouteFactoryAwarer extends ExtensionLoaderAware<RouterFactory> {
     private TypeConverterDelegate delegate = null;
 
     @Override
-    protected WrapperResult<RouterFactory> doWrapper(List<RouterFactory> routerFactories) {
+    protected WrapperResult<RouterFactory> doWrapper(List<RouterFactory> factories) {
         boolean allWrapped = true;
-        List<RouterFactory> wrappedRouteFactories = new ArrayList<>();
-        for (RouterFactory routerFactory : routerFactories) {
-            RouterFactory wrappedRouteFactory = routerFactory;
-            if (!routerFactory.getClass().isAssignableFrom(GrayRouteFactory.class)) {
-                wrappedRouteFactory = new GrayRouteFactory(routerFactory, delegate == null ? new TypeConverterDelegate() : delegate);
+        List<RouterFactory> wrappedFactories = new ArrayList<>();
+        for (RouterFactory factory : factories) {
+            RouterFactory wrappedFactory = factory;
+            if (!factory.getClass().isAssignableFrom(GrayRouteFactory.class)) {
+                wrappedFactory = new GrayRouteFactory(factory, delegate == null ? new TypeConverterDelegate() : delegate);
                 allWrapped = false;
             }
-            wrappedRouteFactories.add(wrappedRouteFactory);
+            wrappedFactories.add(wrappedFactory);
         }
-        return new WrapperResult<>(wrappedRouteFactories, allWrapped);
+        return new WrapperResult<>(wrappedFactories, allWrapped);
     }
 }
