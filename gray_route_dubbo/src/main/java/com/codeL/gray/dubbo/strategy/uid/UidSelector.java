@@ -13,6 +13,8 @@ import com.alibaba.dubbo.rpc.Invoker;
 import java.util.List;
 import java.util.Map;
 
+import static com.codeL.gray.core.context.GrayEnvContextBinder.getGlobalGrayEnvContext;
+
 /**
  * <p>Description: </p>
  * <p>write with codeL</p>
@@ -28,7 +30,8 @@ public class UidSelector<T> extends AbstractSelector<T> {
     }
 
     /**
-     *  deal with invoker using one policy
+     * deal with invoker using one policy
+     *
      * @param invokers
      * @param url
      * @param invocation
@@ -37,25 +40,27 @@ public class UidSelector<T> extends AbstractSelector<T> {
      */
     @Override
     protected IndexedInvoker<T> doSelect(List<Invoker<T>> invokers, URL url, Invocation invocation, Policy policy) {
-        DubboUidPolicy dubboPolicy = (DubboUidPolicy) getTypeConverter().convert(policy);
-        if (dubboPolicy == null) {
+        DubboUidPolicy uidPolicy = (DubboUidPolicy) getTypeConverter().convert(policy);
+        if (uidPolicy == null) {
             return null;
         }
-        Map<String, UidSets> uidSetsMap = dubboPolicy.getDivdata();
-        String keyId = GrayEnvContextBinder.getGlobalGrayEnvContext().get("userId");
+        Map<String, UidSets> uidSetsMap = uidPolicy.getDivdata();
+        String userId = getGlobalGrayEnvContext().get("userId");
         int index = -1;
+        /**
+         * now we use userId matched invoker
+         */
+        IndexedInvoker<T> head = new IndexedInvoker<>(null, 0, false);
+        IndexedInvoker<T> tmp = head;
         for (Invoker invoker : invokers) {
-            String ip = invoker.getUrl().getIp();
-            String port = String.valueOf(invoker.getUrl().getPort());
-            String key = ip + port;
+            URL remoteUrl = invoker.getUrl();
+            String key = remoteUrl.getIp() + remoteUrl.getPort();
             if (uidSetsMap.containsKey(key)) {
                 UidSets uidSets = uidSetsMap.get(key);
-                if (uidSets.contains(keyId)) {
-                    return new IndexedInvoker(invoker, ++index, true);
-                }
-                return new IndexedInvoker(invoker, ++index, false);
+                tmp.setNext(new IndexedInvoker(invoker, ++index, uidSets.contains(userId)));
+                tmp = tmp.getNext();
             }
         }
-        return null;
+        return head;
     }
 }

@@ -5,8 +5,11 @@ import com.codeL.gray.activemq.p.strategy.uid.ActiveMqUidPolicy.UidSets;
 import com.codeL.gray.common.convert.TypeConverter;
 import com.codeL.gray.core.context.GrayEnvContextBinder;
 import com.codeL.gray.core.strategy.Policy;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
+
+import static com.codeL.gray.core.context.GrayEnvContextBinder.getGlobalGrayEnvContext;
 
 
 /**
@@ -17,6 +20,7 @@ import java.util.Map;
  * @author laihj
  * 2019/5/24 15:23
  */
+@Slf4j
 public class UidSelector<T> extends AbstractSelector<T> {
 
     public UidSelector(TypeConverter typeConverter) {
@@ -27,19 +31,24 @@ public class UidSelector<T> extends AbstractSelector<T> {
     protected String doSelect(String destinationName, boolean pubSubDomain, Policy policy) {
         ActiveMqUidPolicy mqUidPolicy = (ActiveMqUidPolicy) getTypeConverter().convert(policy);
         if (mqUidPolicy == null) {
-            return destinationName;
+            return null;
         }
         Map<String, UidSets> uidSetsMap = mqUidPolicy.getDivdata();
 
         UidSets uidSets = uidSetsMap.get(destinationName);
         if (uidSets == null) {
-            return destinationName;
+            return null;
         }
-        String keyId = GrayEnvContextBinder.getGlobalGrayEnvContext().get("userId");
+        String keyId = getGlobalGrayEnvContext().get("userId");
         if (uidSets.contains(keyId)) {
-            return uidSets.getGoalName();
+            String grayGoalName = uidSets.getGoalName();
+            if (grayGoalName == null || "".equals(grayGoalName)) {
+                log.error("userId policy has error, no goalName,userId:{}", keyId);
+                return destinationName;
+            }
+            return grayGoalName;
         }
-        return destinationName;
+        return null;
     }
 
 }

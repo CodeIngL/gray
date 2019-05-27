@@ -1,4 +1,4 @@
-package com.codeL.gray.core.strategy.extract;
+package com.codeL.gray.core.strategy.select;
 
 /**
  * <p>Description: </p>
@@ -6,7 +6,7 @@ package com.codeL.gray.core.strategy.extract;
  * <p>contact <code>codeLHJ@163.com</code></p>
  *
  * @author laihj
- * 2019/5/24 15:23
+ * 2019/5/27 15:47
  */
-public interface Extractor {
+public interface Select {
 }

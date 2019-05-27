@@ -26,13 +26,13 @@ public class UipSelector<T> extends AbstractSelector<T> {
     protected String doSelect(String destinationName, boolean pubSubDomain, Policy policy) {
         ActiveMqUipPolicy mqUipPolicy = (ActiveMqUipPolicy) getTypeConverter().convert(policy);
         if (mqUipPolicy == null) {
-            return destinationName;
+            return null;
         }
         Map<String, ActiveMqUipPolicy.UipSets> uipSetsMap = mqUipPolicy.getDivdata();
 
         ActiveMqUipPolicy.UipSets uipSets = uipSetsMap.get(destinationName);
         if (uipSets == null) {
-            return destinationName;
+            return null;
         }
         String keyId = GrayEnvContextBinder.getGlobalGrayEnvContext().get("sourceIp");
         if (uipSets.contains(keyId)) {
@@ -41,8 +41,8 @@ public class UipSelector<T> extends AbstractSelector<T> {
                 log.error("ip policy has error, no goalName,ip:{}", keyId);
                 return destinationName;
             }
-            return uipSets.getGoalName();
+            return grayGoalName;
         }
-        return destinationName;
+        return null;
     }
 }

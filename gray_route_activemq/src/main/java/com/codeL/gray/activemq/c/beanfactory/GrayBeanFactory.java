@@ -22,13 +22,13 @@ import static com.codeL.gray.core.context.GrayContextBinder.getGlobalGrayContext
  * @author laihj
  * 2019/5/24 15:23
  */
-public class GrayBeanFactory {
+class GrayBeanFactory {
 
-    public GrayBeanFactory(ApplicationContext applicationContext, ConfigurableListableBeanFactory parent) {
-        this.parentApplication = (applicationContext);
+    GrayBeanFactory(ApplicationContext applicationContext, ConfigurableListableBeanFactory parent) {
+        this.parent = (applicationContext);
     }
 
-    private ApplicationContext parentApplication;
+    private ApplicationContext parent;
 
     private StaticApplicationContext staticApplicationContext = null;
 
@@ -44,7 +44,7 @@ public class GrayBeanFactory {
         if (staticApplicationContext != null) {
             staticApplicationContext.getBeanFactory().destroySingletons();
         }
-        staticApplicationContext = new StaticApplicationContext(parentApplication);
+        staticApplicationContext = new StaticApplicationContext(parent);
         String[] beanNames = originRegistry.getBeanDefinitionNames();
         if (beanNames.length == 0) {
             return;

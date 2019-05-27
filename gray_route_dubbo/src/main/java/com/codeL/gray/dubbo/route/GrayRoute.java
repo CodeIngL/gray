@@ -3,6 +3,7 @@ package com.codeL.gray.dubbo.route;
 import com.codeL.gray.common.convert.TypeConverterDelegate;
 import com.codeL.gray.core.GrayStatus;
 import com.codeL.gray.core.context.GrayContext;
+import com.codeL.gray.dubbo.strategy.CompositeIndexedInvoker;
 import com.codeL.gray.dubbo.strategy.IndexedInvoker;
 import com.codeL.gray.dubbo.strategy.extract.Extractor;
 import com.alibaba.dubbo.common.URL;
@@ -52,20 +53,38 @@ public class GrayRoute implements Router {
         if (!(GrayStatus.Open == status)) {
             return router.route(invokers, url, invocation);
         }
-        IndexedInvoker<T> invoker = new Extractor(delegate).extract(invokers, url, invocation);
+        CompositeIndexedInvoker<T> invoker = new Extractor(delegate).extract(invokers, url, invocation);
         if (invoker == null) {
             return router.route(invokers, url, invocation);
         }
-        if (invoker.isChoiced()) {
-            List<Invoker<T>> list = new ArrayList<>();
-            list.add(invoker.getInvoker());
-            return list;
-        }
         List<Invoker<T>> changedInvokers = new ArrayList<>();
+
+        //step 1. find some invoker matched policy with info
+        List<IndexedInvoker> chosen = invoker.getAllChosen();
+        if (chosen != null || chosen.size() > 0) {
+            if (chosen.size() == 1) {
+                changedInvokers.add(chosen.get(0).getInvoker());
+                return changedInvokers;
+            }
+            for (int i = 0; i < chosen.size(); i++) {
+                changedInvokers.add(chosen.get(i).getInvoker());
+            }
+            return router.route(changedInvokers, url, invocation);
+        }
+
+        //step 2. find some invoker matched policy not with info
+        List<IndexedInvoker> unChosen = invoker.getAllUnChosen();
         for (int i = 0; i < invokers.size(); i++) {
-            if (i == invoker.getIndex())
-                continue;
-            changedInvokers.add(invokers.get(i));
+            boolean has = false;
+            for (int j = 0; j < unChosen.size(); j++) {
+                if (invokers.get(i).equals(unChosen.get(j))) {
+                    has = true;
+                    break;
+                }
+            }
+            if (!has) {
+                changedInvokers.add(invokers.get(i));
+            }
         }
         return router.route(changedInvokers, url, invocation);
     }

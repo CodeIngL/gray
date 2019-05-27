@@ -23,13 +23,13 @@ public class PolicyUtil {
         if (policy == null) {
             return null;
         }
-        List<DivdataBean> divdataBeans = JSONObject.parseArray(policy.getDivdata(), DivdataBean.class);
+        List<DivdataBean> datas = JSONObject.parseArray(policy.getDivdata(), DivdataBean.class);
         Map<String, String> map = new HashMap<>();
-        if (divdataBeans == null || divdataBeans.size() == 0) {
-            return new HashMap<>();
+        if (datas == null || datas.size() == 0) {
+            return map;
         }
-        for (DivdataBean divdataBean : divdataBeans) {
-            map.put(divdataBean.getOriginName(), divdataBean.getGoalName());
+        for (DivdataBean data : datas) {
+            map.put(data.getOriginName(), data.getGoalName());
         }
         return map;
     }

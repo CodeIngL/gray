@@ -20,12 +20,14 @@ public class IndexedInvoker<T> {
 
     private final int index;
 
-    private boolean choiced = false;
+    private final boolean choosed;
 
-    public IndexedInvoker(Invoker<T> invoker, int index, boolean choiced) {
+    private IndexedInvoker<T> next = null;
+
+    public IndexedInvoker(Invoker<T> invoker, int index, boolean choosed) {
         this.invoker = invoker;
         this.index = index;
-        this.choiced = choiced;
+        this.choosed = choosed;
     }
 
 }

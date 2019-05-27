@@ -50,6 +50,7 @@ public class GrayLoadBalance extends AbstractLoadBalance implements CompositeLoa
         }
         List<Invoker<T>> changedInvokers = new ArrayList<>();
 
+        //step 1. find some invoker matched policy with info
         List<IndexedInvoker> chosen = invoker.getAllChosen();
         if (chosen != null || chosen.size() > 0) {
             if (chosen.size() == 1){
@@ -61,6 +62,7 @@ public class GrayLoadBalance extends AbstractLoadBalance implements CompositeLoa
             return originLoadBalance.select(changedInvokers, url, invocation);
         }
 
+        //step 2. find some invoker matched policy not with info
         List<IndexedInvoker> unChosen = invoker.getAllUnChosen();
         for (int i = 0; i < invokers.size(); i++) {
             boolean has = false;
@@ -70,7 +72,7 @@ public class GrayLoadBalance extends AbstractLoadBalance implements CompositeLoa
                     break;
                 }
             }
-            if (has){
+            if (!has){
                 changedInvokers.add(invokers.get(i));
             }
         }

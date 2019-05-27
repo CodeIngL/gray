@@ -1,6 +1,7 @@
 package com.codeL.gray.activemq.p.select;
 
 import com.codeL.gray.core.strategy.Policy;
+import com.codeL.gray.core.strategy.select.Select;
 
 /**
  * <p>Description: </p>
@@ -10,6 +11,6 @@ import com.codeL.gray.core.strategy.Policy;
  * @author laihj
  * 2019/5/24 15:23
  */
-public interface Selector {
+public interface Selector extends Select {
     String select(String destinationName, boolean pubSubDomain, Policy policy);
 }
