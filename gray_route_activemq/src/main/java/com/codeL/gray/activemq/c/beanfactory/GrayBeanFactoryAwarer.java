@@ -46,6 +46,7 @@ public class GrayBeanFactoryAwarer {
         if (previousIndex == currentIndex || previousIndex * currentIndex < 0) {
             return;
         }
+        log.warn("refresh jms container, index:{}", previousIndex);
         getGlobalGrayBeanFactory().refresh();
         index = currentIndex;
     }

@@ -98,6 +98,9 @@ public class HttpURLWatchDog extends AbstractWatchDog {
         };
     }
 
+    /**
+     * reporter the status
+     */
     private static class Reporter {
 
         static final String API = "/gray/setStatus";
@@ -123,7 +126,9 @@ public class HttpURLWatchDog extends AbstractWatchDog {
         }
     }
 
-
+    /**
+     * fetch policy
+     */
     private static class Fetch {
 
         private static final String API = "/gray/getPolicy";
@@ -186,7 +191,6 @@ public class HttpURLWatchDog extends AbstractWatchDog {
             }
         }
     }
-
 
     public static void main(String[] args) {
 
