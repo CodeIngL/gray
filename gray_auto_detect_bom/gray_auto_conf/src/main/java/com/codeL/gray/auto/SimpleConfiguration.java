@@ -1,9 +1,9 @@
 package com.codeL.gray.auto;
 
-import com.codeL.gray.activemq.support.EnableGreyActiveMq;
+import com.codeL.gray.jms.support.EnableGrayJms;
 import com.codeL.gray.core.watch.HttpURLWatchDog;
 import com.codeL.gray.core.watch.WatchDog;
-import com.codeL.gray.dubbo.support.EnableGreyDubbo;
+import com.codeL.gray.dubbo.support.EnableGrayDubbo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,8 +16,8 @@ import org.springframework.context.annotation.Configuration;
  * @author laihj
  * 2019/5/24 15:23
  */
-@EnableGreyActiveMq
-@EnableGreyDubbo
+@EnableGrayJms
+@EnableGrayDubbo
 @Configuration
 public class SimpleConfiguration {
 

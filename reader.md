@@ -33,11 +33,11 @@ dubbo端:
         <artifactId>gray_route_dubbo_support</artifactId>
 	</dependency>
 
-activemq端:
+jms端:
 
     <dependency>
         <groupId>com.codeL</groupId>
-        <artifactId>gray_route_activemq_support</artifactId>
+        <artifactId>gray_route_jms_support</artifactId>
     </dependency>
 
 
@@ -55,18 +55,18 @@ activemq端:
         <artifactId>gray_auto_dubbo</artifactId>
     </dependency>
     
-激活或者撤销activemq消费端:
+激活或者撤销jms消费端:
 
     <dependency>
         <groupId>com.codeL</groupId>
-        <artifactId>gray_auto_activemq_c</artifactId>
+        <artifactId>gray_auto_jms_c</artifactId>
     </dependency>
     
-激活或者撤销activemq生产端:
+激活或者撤销jms生产端:
 
     <dependency>
         <groupId>com.codeL</groupId>
-        <artifactId>gray_auto_activemq_p</artifactId>
+        <artifactId>gray_auto_jms_p</artifactId>
     </dependency>
 
 ## 2. spring代码配置 ##

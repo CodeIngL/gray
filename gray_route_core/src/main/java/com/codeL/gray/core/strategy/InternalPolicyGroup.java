@@ -37,7 +37,7 @@ public class InternalPolicyGroup {
      * 				"uidset": ["111111", "2222222"],
      * 				"goalName": "hehehehe"
      *            }],
-     * 			"servertype": "activemq:P"
+     * 			"servertype": "jms:P"
      *        },
      * 		"third": {
      * 			"divtype": "uid",
@@ -45,7 +45,7 @@ public class InternalPolicyGroup {
      * 				"originName": "hhhhhh",
      * 				"goalName": "hehehehe"
      *            }],
-     * 			"servertype": "activemq:C"
+     * 			"servertype": "jms:C"
      *        }
      *    }
      * </code>

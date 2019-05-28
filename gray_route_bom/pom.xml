@@ -48,12 +48,12 @@
             </dependency>
             <dependency>
                 <groupId>com.codeL</groupId>
-                <artifactId>gray_route_activemq</artifactId>
+                <artifactId>gray_route_jms</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.codeL</groupId>
-                <artifactId>gray_route_activemq_support</artifactId>
+                <artifactId>gray_route_jms_support</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

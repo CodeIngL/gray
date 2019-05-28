@@ -10,11 +10,11 @@
     <modules>
         <module>gray_route_core</module>
         <module>gray_route_dubbo</module>
-        <module>gray_route_activemq</module>
+        <module>gray_route_jms</module>
         <module>gray_route_bom</module>
         <module>gray_route_common</module>
         <module>gray_route_dubbo_support</module>
-        <module>gray_route_activemq_support</module>
+        <module>gray_route_jms_support</module>
         <module>gray_route_core_support</module>
         <module>gray_auto_detect_bom</module>
     </modules>

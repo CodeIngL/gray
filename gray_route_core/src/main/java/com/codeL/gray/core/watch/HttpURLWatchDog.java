@@ -8,12 +8,12 @@ import com.codeL.gray.core.meta.DefaultMetaReader;
 import com.codeL.gray.core.strategy.PolicyGroup;
 import com.codeL.gray.core.util.HttpUtils;
 import com.alibaba.fastjson.JSONObject;
-import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -73,7 +73,7 @@ public class HttpURLWatchDog extends AbstractWatchDog {
                 String policyGroupStr = fetch.fetch();
                 if (policyGroupStr != null && !"".equals(policyGroupStr)) {
                     byte[] bytes = policyGroupStr.getBytes();
-                    ByteInputStream inputStream = new ByteInputStream(bytes, bytes.length);
+                    ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
                     policyGroup = new DefaultMetaReader().readPolicyGroup(inputStream);
                 }
             } catch (Exception e) {
@@ -218,7 +218,7 @@ public class HttpURLWatchDog extends AbstractWatchDog {
                 "\t\t\t\t\"uidset\": [\"333333\", \"4444444\"],\n" +
                 "\t\t\t\t\"goalName\": \"dadadada\"\n" +
                 "\t\t\t}],\n" +
-                "\t\t\t\"servertype\": \"activemq:P\"\n" +
+                "\t\t\t\"servertype\": \"jms:P\"\n" +
                 "\t\t},\n" +
                 "         \"third\": {\n" +
                 "\t\t\t\"divtype\": \"uid\",\n" +
@@ -229,11 +229,11 @@ public class HttpURLWatchDog extends AbstractWatchDog {
                 "                \"originName\":\"dddddd\",\n" +
                 "\t\t\t\t\"goalName\": \"dadadada\"\n" +
                 "\t\t\t}],\n" +
-                "\t\t\t\"servertype\": \"activemq:C\"\n" +
+                "\t\t\t\"servertype\": \"jms:C\"\n" +
                 "\t\t}\n" +
                 "\t}\n" +
                 "}";
-        ByteInputStream inputStream = new ByteInputStream(policyGroupStr.getBytes(), policyGroupStr.getBytes().length);
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(policyGroupStr.getBytes());
         PolicyGroup policyGroup = new DefaultMetaReader().readPolicyGroup(inputStream);
         System.out.println(123);
     }

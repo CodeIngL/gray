@@ -16,8 +16,8 @@
     </organization>
     <modules>
         <module>gray_auto_dubbo</module>
-        <module>gray_auto_activemq_p</module>
-        <module>gray_auto_activemq_c</module>
+        <module>gray_auto_jms_p</module>
+        <module>gray_auto_jms_c</module>
         <module>gray_auto_conf</module>
     </modules>
     <scm>
@@ -57,12 +57,12 @@
             </dependency>
             <dependency>
                 <groupId>com.codeL</groupId>
-                <artifactId>gray_auto_activemq_p</artifactId>
+                <artifactId>gray_auto_jms_p</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.codeL</groupId>
-                <artifactId>gray_auto_activemq_c</artifactId>
+                <artifactId>gray_auto_jms_c</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
