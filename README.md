@@ -73,6 +73,6 @@ jms端:
 
 配置项
 
-    gray.http.url=http://10.199.129.12:9000/admin
+    gray.http.url=http://127.0.0.1:9000/admin
     
 OK
