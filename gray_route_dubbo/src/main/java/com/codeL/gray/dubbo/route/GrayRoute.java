@@ -51,10 +51,16 @@ public class GrayRoute implements Router {
         GrayContext context = getGlobalGrayContext();
         GrayStatus status = context.getGrayStatus();
         if (!(GrayStatus.Open == status)) {
+            if (router == null) {
+                return invokers;
+            }
             return router.route(invokers, url, invocation);
         }
         CompositeIndexedInvoker<T> invoker = new Extractor(delegate).extract(invokers, url, invocation);
         if (invoker == null) {
+            if (router == null) {
+                return invokers;
+            }
             return router.route(invokers, url, invocation);
         }
         List<Invoker<T>> changedInvokers = new ArrayList<>();
@@ -68,6 +74,12 @@ public class GrayRoute implements Router {
             }
             for (int i = 0; i < chosen.size(); i++) {
                 changedInvokers.add(chosen.get(i).getInvoker());
+            }
+            if (router == null) {
+                if (changedInvokers.size() > 0) {
+                    return changedInvokers;
+                }
+                return invokers;
             }
             return router.route(changedInvokers, url, invocation);
         }
@@ -85,6 +97,12 @@ public class GrayRoute implements Router {
             if (!has) {
                 changedInvokers.add(invokers.get(i));
             }
+        }
+        if (router == null) {
+            if (changedInvokers.size() > 0) {
+                return changedInvokers;
+            }
+            return invokers;
         }
         return router.route(changedInvokers, url, invocation);
     }
