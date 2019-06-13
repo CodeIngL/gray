@@ -6,7 +6,10 @@ import com.codeL.gray.core.support.condition.AutoCondition;
 import com.codeL.gray.core.support.condition.strategy.Calculation;
 import com.codeL.gray.core.watch.FileWatchDog;
 import com.codeL.gray.core.watch.WatchDog;
+import com.codeL.gray.dubbo.loadbalance.LBCondition;
 import com.codeL.gray.dubbo.loadbalance.LoadBalanceAwarer;
+import com.codeL.gray.dubbo.route.RouteFactoryAwarer;
+import com.codeL.gray.dubbo.route.RouterCondition;
 import com.codeL.gray.dubbo.strategy.extract.Extractor;
 import com.codeL.gray.dubbo.strategy.uid.UidSelector;
 import com.codeL.gray.dubbo.strategy.uid.UidTypeConverter;
@@ -30,10 +33,19 @@ import javax.annotation.PostConstruct;
 public class ImportGrayDubboConfiguration {
 
     @Bean
+    @Conditional({LBCondition.class})
     LoadBalanceAwarer loadBalanceAwarer() {
         LoadBalanceAwarer loadBalanceAwarer = new LoadBalanceAwarer();
         loadBalanceAwarer.setDelegate(typeConverterDelegate());
         return loadBalanceAwarer;
+    }
+
+    @Bean
+    @Conditional({RouterCondition.class})
+    RouteFactoryAwarer routeFactoryAwarer() {
+        RouteFactoryAwarer routeFactoryAwarer = new RouteFactoryAwarer();
+        routeFactoryAwarer.setDelegate(typeConverterDelegate());
+        return routeFactoryAwarer;
     }
 
     @Bean
