@@ -14,7 +14,6 @@ import com.alibaba.dubbo.rpc.cluster.loadbalance.AbstractLoadBalance;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 import static com.codeL.gray.core.context.GrayContextBinder.getGlobalGrayContext;
 
@@ -28,12 +27,12 @@ import static com.codeL.gray.core.context.GrayContextBinder.getGlobalGrayContext
  */
 public class GrayLoadBalance extends AbstractLoadBalance implements CompositeLoadBalance {
 
-    public GrayLoadBalance(LoadBalance originLoadBalance, TypeConverterDelegate delegate) {
-        this.originLoadBalance = originLoadBalance;
+    public GrayLoadBalance(LoadBalance loadBalance, TypeConverterDelegate delegate) {
+        this.loadBalance = loadBalance;
         this.extractor = new Extractor(delegate);
     }
 
-    private LoadBalance originLoadBalance;
+    private LoadBalance loadBalance;
     private Extractor extractor;
 
     @Override
@@ -41,25 +40,25 @@ public class GrayLoadBalance extends AbstractLoadBalance implements CompositeLoa
         GrayContext context = getGlobalGrayContext();
         GrayStatus status = context.getGrayStatus();
         if (!(GrayStatus.Open == status)) {
-            return originLoadBalance.select(invokers, url, invocation);
+            return loadBalance.select(invokers, url, invocation);
         }
 
         CompositeIndexedInvoker<T> invoker = extractor.extract(invokers, url, invocation);
         if (invoker == null) {
-            return originLoadBalance.select(invokers, url, invocation);
+            return loadBalance.select(invokers, url, invocation);
         }
         List<Invoker<T>> changedInvokers = new ArrayList<>();
 
         //step 1. find some invoker matched policy with info
         List<IndexedInvoker> chosen = invoker.getAllChosen();
-        if (chosen != null || chosen.size() > 0) {
+        if (chosen != null && chosen.size() > 0) {
             if (chosen.size() == 1){
                 return chosen.get(0).getInvoker();
             }
             for (int i = 0; i < chosen.size(); i++) {
                 changedInvokers.add(chosen.get(i).getInvoker());
             }
-            return originLoadBalance.select(changedInvokers, url, invocation);
+            return loadBalance.select(changedInvokers, url, invocation);
         }
 
         //step 2. find some invoker matched policy not with info
@@ -67,7 +66,7 @@ public class GrayLoadBalance extends AbstractLoadBalance implements CompositeLoa
         for (int i = 0; i < invokers.size(); i++) {
             boolean has = false;
             for (int j = 0; j < unChosen.size(); j++) {
-                if (invokers.get(i).equals(unChosen.get(j))) {
+                if (invokers.get(i).equals(unChosen.get(j).getInvoker())) {
                     has = true;
                     break;
                 }
@@ -76,11 +75,11 @@ public class GrayLoadBalance extends AbstractLoadBalance implements CompositeLoa
                 changedInvokers.add(invokers.get(i));
             }
         }
-        return originLoadBalance.select(changedInvokers, url, invocation);
+        return loadBalance.select(changedInvokers, url, invocation);
     }
 
     @Override
     public LoadBalance getCompositeLoadBalance() {
-        return originLoadBalance;
+        return loadBalance;
     }
 }

@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
 public class SimpleConfiguration {
 
     @Bean
-    WatchDog wathchDog(@Value("${gray.http.url}") String url) {
+    WatchDog watchDog(@Value("${gray.http.url}") String url) {
         HttpURLWatchDog watchDog = new HttpURLWatchDog();
         watchDog.setUrl(url);
         return watchDog;

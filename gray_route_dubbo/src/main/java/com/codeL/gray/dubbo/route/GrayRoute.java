@@ -67,7 +67,7 @@ public class GrayRoute implements Router {
 
         //step 1. find some invoker matched policy with info
         List<IndexedInvoker> chosen = invoker.getAllChosen();
-        if (chosen != null || chosen.size() > 0) {
+        if (chosen != null && chosen.size() > 0) {
             if (chosen.size() == 1) {
                 changedInvokers.add(chosen.get(0).getInvoker());
                 return changedInvokers;
