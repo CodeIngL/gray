@@ -35,21 +35,13 @@ class GrayMBeanExporter {
             }
             RequiredModelMBean mbean = new RequiredModelMBean();
             mbean.setManagedResource(grayStatusMBean, "objectReference");
-            ModelMBeanAttributeInfo grayStatus = new ModelMBeanAttributeInfo("grayStatus", "java.lang.String",
-                    "gray status", true, false, false, new DescriptorSupport(new String[]{"name=grayStatus",
-                    "descriptorType=attribute", "getMethod=getGrayStatus"}));
-            ModelMBeanAttributeInfo grayType = new ModelMBeanAttributeInfo("grayType", "java.lang.String",
-                    "gray type", true, false, false, new DescriptorSupport(new String[]{"name=grayType",
-                    "descriptorType=attribute", "getMethod=getGrayType"}));
-
             ModelMBeanOperationInfo getGrayStatus = new ModelMBeanOperationInfo("get gray status", grayStatusMBean
                     .getClass().getMethod("getGrayStatus"));
             ModelMBeanOperationInfo getGrayType = new ModelMBeanOperationInfo("get gray type", grayStatusMBean
                     .getClass().getMethod("getGrayType"));
 
             ModelMBeanInfo mbeanInfo = new ModelMBeanInfoSupport("GrayStatusMBean", "show gray info",
-                    new ModelMBeanAttributeInfo[]{grayStatus, grayType}, null, new ModelMBeanOperationInfo[]{getGrayStatus,
-                    getGrayType}, null);
+                    null, null, new ModelMBeanOperationInfo[]{getGrayStatus, getGrayType}, null);
             mbean.setModelMBeanInfo(mbeanInfo);
             mBeanServer.registerMBean(mbean, objectName);
             return true;
