@@ -18,24 +18,21 @@ public class ReferenceBeanProcessor implements BeanDefinitionRegistryPostProcess
 
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-        return;
     }
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        String[] dubbors = beanFactory.getBeanNamesForType(ReferenceBean.class, false, false);
-        if (dubbors != null && dubbors.length > 0) {
-            for (String dubbor : dubbors) {
-                addParameters(beanFactory, dubbor);
+        wrapperProcessor(beanFactory, ReferenceBean.class);
+        wrapperProcessor(beanFactory, RegistryConfig.class);
+    }
+
+    private void wrapperProcessor(ConfigurableListableBeanFactory beanFactory, Class cls) {
+        String[] dubbos = beanFactory.getBeanNamesForType(cls, false, false);
+        if (dubbos != null && dubbos.length > 0) {
+            for (String dubbo : dubbos) {
+                addParameters(beanFactory, dubbo);
             }
         }
-        String[] dubbrrs = beanFactory.getBeanNamesForType(RegistryConfig.class, false, false);
-        if (dubbrrs != null && dubbrrs.length > 0) {
-            for (String dubborr : dubbrrs) {
-                addParameters(beanFactory, dubborr);
-            }
-        }
-        return;
     }
 
     private void addParameters(ConfigurableListableBeanFactory beanFactory, String dubbor) {
