@@ -9,6 +9,13 @@ maven依赖
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <version>${你的version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>    
+            <dependency>
                 <groupId>com.codeL</groupId>
                 <artifactId>gray_route_bom</artifactId>
                 <version>1.0-SNAPSHOT</version>
@@ -41,28 +48,28 @@ jms端:
     </dependency>
 
 
-自动检测:
+自动激活检测,当存在相关jar包的时候进行相关技术栈灰度支持:
 
      <dependency>
         <groupId>com.codeL</groupId>
         <artifactId>gray_auto_conf</artifactId>
      </dependency>    
 
-激活或者撤销dubbo:
+配置激活dubbo灰度功能:
 
     <dependency>
         <groupId>com.codeL</groupId>
         <artifactId>gray_auto_dubbo</artifactId>
     </dependency>
     
-激活或者撤销jms消费端:
+配置激活jms消费端灰度功能:
 
     <dependency>
         <groupId>com.codeL</groupId>
         <artifactId>gray_auto_jms_c</artifactId>
     </dependency>
     
-激活或者撤销jms生产端:
+配置激活jms生产端灰度功能:
 
     <dependency>
         <groupId>com.codeL</groupId>
