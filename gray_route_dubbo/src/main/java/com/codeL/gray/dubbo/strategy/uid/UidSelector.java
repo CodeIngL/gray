@@ -1,7 +1,6 @@
 package com.codeL.gray.dubbo.strategy.uid;
 
 import com.codeL.gray.common.convert.TypeConverter;
-import com.codeL.gray.core.context.GrayEnvContextBinder;
 import com.codeL.gray.core.strategy.Policy;
 import com.codeL.gray.dubbo.select.AbstractSelector;
 import com.codeL.gray.dubbo.strategy.IndexedInvoker;
@@ -12,6 +11,7 @@ import com.alibaba.dubbo.rpc.Invoker;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.codeL.gray.core.context.GrayEnvContextBinder.getGlobalGrayEnvContext;
 
@@ -52,15 +52,50 @@ public class UidSelector<T> extends AbstractSelector<T> {
          */
         IndexedInvoker<T> head = new IndexedInvoker<>(null, 0, false);
         IndexedInvoker<T> tmp = head;
+        int useCount = 0;
         for (Invoker invoker : invokers) {
             URL remoteUrl = invoker.getUrl();
-            String key = remoteUrl.getIp() + remoteUrl.getPort();
+            String key = remoteUrl.getIp() + ":" + remoteUrl.getPort();
             if (uidSetsMap.containsKey(key)) {
+                useCount++;
                 UidSets uidSets = uidSetsMap.get(key);
-                tmp.setNext(new IndexedInvoker(invoker, ++index, uidSets.contains(userId)));
+                if (userId != null && uidSets.contains(userId)) {
+                    tmp.setNext(new IndexedInvoker(invoker, ++index, true));
+                    tmp = tmp.getNext();
+                    continue;
+                }
+                tmp.setNext(new IndexedInvoker(invoker, ++index, fuzzyMatched(uidSets.getUids(), userId)));
                 tmp = tmp.getNext();
             }
         }
+        if (useCount == invokers.size()) {
+            IndexedInvoker<T> next = head.getNext();
+            while (next != null) {
+                next.setChoosed(true);
+                next = next.getNext();
+            }
+        }
         return head;
+    }
+
+    boolean fuzzyMatched(Set<String> ids, String keyId) {
+        if (ids == null) {
+            return false;
+        }
+        if (keyId == null || keyId.length() == 0) {
+            return false;
+        }
+        CharSequence l = keyId.subSequence(keyId.length() - 1, keyId.length());
+        char r = l.charAt(0);
+        for (String id : ids) {
+            if (!id.startsWith("*")) {
+                continue;
+            }
+            int index = id.indexOf(r, id.length() - 1);
+            if (index != -1) {
+                return true;
+            }
+        }
+        return false;
     }
 }
