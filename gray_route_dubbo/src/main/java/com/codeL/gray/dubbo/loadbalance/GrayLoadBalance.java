@@ -1,6 +1,5 @@
 package com.codeL.gray.dubbo.loadbalance;
 
-import com.codeL.gray.common.convert.TypeConverterDelegate;
 import com.codeL.gray.core.GrayStatus;
 import com.codeL.gray.core.context.GrayContext;
 import com.codeL.gray.dubbo.strategy.CompositeIndexedInvoker;
@@ -27,13 +26,11 @@ import static com.codeL.gray.core.context.GrayContextBinder.getGlobalGrayContext
  */
 public class GrayLoadBalance extends AbstractLoadBalance implements CompositeLoadBalance {
 
-    public GrayLoadBalance(LoadBalance loadBalance, TypeConverterDelegate delegate) {
+    public GrayLoadBalance(LoadBalance loadBalance) {
         this.loadBalance = loadBalance;
-        this.extractor = new Extractor(delegate);
     }
 
     private LoadBalance loadBalance;
-    private Extractor extractor;
 
     @Override
     protected <T> Invoker<T> doSelect(List<Invoker<T>> invokers, URL url, Invocation invocation) {
@@ -43,7 +40,7 @@ public class GrayLoadBalance extends AbstractLoadBalance implements CompositeLoa
             return loadBalance.select(invokers, url, invocation);
         }
 
-        CompositeIndexedInvoker<T> invoker = extractor.extract(invokers, url, invocation);
+        CompositeIndexedInvoker<T> invoker = new Extractor().extract(invokers, url, invocation);
         if (invoker == null) {
             return loadBalance.select(invokers, url, invocation);
         }

@@ -1,7 +1,6 @@
 package com.codeL.gray.dubbo.strategy.extract;
 
 import com.codeL.gray.common.ServerTypeHolder;
-import com.codeL.gray.common.convert.TypeConverterDelegate;
 import com.codeL.gray.common.convert.TypeHolder;
 import com.codeL.gray.core.strategy.Policy;
 import com.codeL.gray.core.strategy.extract.PExtract;
@@ -32,10 +31,7 @@ public class Extractor<S extends Selector> implements PExtract {
 
     private static final String DUBBO_SERVER_TYPE_PREFIX = DUBBO_SERVER_TYPE + ":" + P.name() + ":";
 
-    private TypeConverterDelegate delegate;
-
-    public Extractor(TypeConverterDelegate delegate) {
-        this.delegate = delegate;
+    public Extractor() {
     }
 
     public <T> CompositeIndexedInvoker<T> extract(List<Invoker<T>> invokers, URL url, Invocation invocation) {

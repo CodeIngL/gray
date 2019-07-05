@@ -1,10 +1,8 @@
 package com.codeL.gray.dubbo.loadbalance;
 
-import com.codeL.gray.common.convert.TypeConverterDelegate;
 import com.codeL.gray.dubbo.ExtensionLoaderAware;
 import com.alibaba.dubbo.rpc.cluster.LoadBalance;
 import com.alibaba.dubbo.rpc.cluster.loadbalance.AbstractLoadBalance;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -25,9 +23,6 @@ public class LoadBalanceAwarer extends ExtensionLoaderAware<LoadBalance> {
         super(LoadBalance.class);
     }
 
-    @Setter
-    private TypeConverterDelegate delegate = null;
-
     @Override
     protected WrapperResult<LoadBalance> doWrapper(List<LoadBalance> loadBalances) {
         boolean allWrapped = true;
@@ -36,7 +31,7 @@ public class LoadBalanceAwarer extends ExtensionLoaderAware<LoadBalance> {
             LoadBalance wrappedLoadBalance = loadBalance;
             if (!loadBalance.getClass().isAssignableFrom(GrayLoadBalance.class) &&
                     AbstractLoadBalance.class.isAssignableFrom(loadBalance.getClass())) {
-                wrappedLoadBalance = new GrayLoadBalance(loadBalance, delegate == null ? new TypeConverterDelegate() : delegate);
+                wrappedLoadBalance = new GrayLoadBalance(loadBalance);
                 allWrapped = false;
             }
             wrappedLoadBalances.add(wrappedLoadBalance);

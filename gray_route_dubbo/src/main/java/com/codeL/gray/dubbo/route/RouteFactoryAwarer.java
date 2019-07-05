@@ -1,9 +1,7 @@
 package com.codeL.gray.dubbo.route;
 
-import com.codeL.gray.common.convert.TypeConverterDelegate;
 import com.codeL.gray.dubbo.ExtensionLoaderAware;
 import com.alibaba.dubbo.rpc.cluster.RouterFactory;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -24,9 +22,6 @@ public class RouteFactoryAwarer extends ExtensionLoaderAware<RouterFactory> {
         super(RouterFactory.class);
     }
 
-    @Setter
-    private TypeConverterDelegate delegate = null;
-
     @Override
     protected WrapperResult<RouterFactory> doWrapper(List<RouterFactory> factories) {
         boolean allWrapped = true;
@@ -34,7 +29,7 @@ public class RouteFactoryAwarer extends ExtensionLoaderAware<RouterFactory> {
         for (RouterFactory factory : factories) {
             RouterFactory wrappedFactory = factory;
             if (!factory.getClass().isAssignableFrom(GrayRouteFactory.class)) {
-                wrappedFactory = new GrayRouteFactory(factory, delegate == null ? new TypeConverterDelegate() : delegate);
+                wrappedFactory = new GrayRouteFactory(factory);
                 allWrapped = false;
             }
             wrappedFactories.add(wrappedFactory);

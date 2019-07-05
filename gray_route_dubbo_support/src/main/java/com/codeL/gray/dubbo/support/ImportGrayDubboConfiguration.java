@@ -1,6 +1,6 @@
 package com.codeL.gray.dubbo.support;
 
-import com.codeL.gray.common.convert.TypeConverterDelegate;
+import com.codeL.gray.common.convert.TypeConverterRegistry;
 import com.codeL.gray.common.convert.TypeHolder;
 import com.codeL.gray.core.support.condition.AutoCondition;
 import com.codeL.gray.core.support.condition.strategy.Calculation;
@@ -35,17 +35,13 @@ public class ImportGrayDubboConfiguration {
     @Bean
     @Conditional({LBCondition.class})
     LoadBalanceAwarer loadBalanceAwarer() {
-        LoadBalanceAwarer loadBalanceAwarer = new LoadBalanceAwarer();
-        loadBalanceAwarer.setDelegate(typeConverterDelegate());
-        return loadBalanceAwarer;
+        return new LoadBalanceAwarer();
     }
 
     @Bean
     @Conditional({RouterCondition.class})
     RouteFactoryAwarer routeFactoryAwarer() {
-        RouteFactoryAwarer routeFactoryAwarer = new RouteFactoryAwarer();
-        routeFactoryAwarer.setDelegate(typeConverterDelegate());
-        return routeFactoryAwarer;
+        return new RouteFactoryAwarer();
     }
 
     @Bean
@@ -53,16 +49,10 @@ public class ImportGrayDubboConfiguration {
         return new FileWatchDog();
     }
 
-    @Bean
-    TypeConverterDelegate typeConverterDelegate() {
-        TypeConverterDelegate delegate = new TypeConverterDelegate();
-        delegate.addTypeConverter(new TypeHolder("uid"), new UidTypeConverter());
-        return delegate;
-    }
-
 
     @PostConstruct
     public void init() {
+        TypeConverterRegistry.getGlobalInstance().addTypeConverter(new TypeHolder("uid"), new UidTypeConverter());
         Extractor.register(new TypeHolder("dubbo:P:uid"), new UidSelector(new UidTypeConverter()));
         Extractor.register(new TypeHolder("dubbo:P:ip"), new UipSelector(new UipTypeConverter()));
     }

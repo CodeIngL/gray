@@ -1,6 +1,5 @@
 package com.codeL.gray.dubbo.route;
 
-import com.codeL.gray.common.convert.TypeConverterDelegate;
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.rpc.cluster.Router;
 import com.alibaba.dubbo.rpc.cluster.RouterFactory;
@@ -17,15 +16,12 @@ public class GrayRouteFactory implements RouterFactory {
 
     private final RouterFactory routerFactory;
 
-    private final TypeConverterDelegate delegate;
-
-    public GrayRouteFactory(RouterFactory routerFactory, TypeConverterDelegate delegate) {
+    public GrayRouteFactory(RouterFactory routerFactory) {
         this.routerFactory = routerFactory;
-        this.delegate = delegate;
     }
 
     @Override
     public Router getRouter(URL url) {
-        return new GrayRoute(url, routerFactory.getRouter(url), delegate);
+        return new GrayRoute(url, routerFactory.getRouter(url));
     }
 }

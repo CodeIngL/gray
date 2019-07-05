@@ -1,6 +1,5 @@
 package com.codeL.gray.dubbo.route;
 
-import com.codeL.gray.common.convert.TypeConverterDelegate;
 import com.codeL.gray.core.GrayStatus;
 import com.codeL.gray.core.context.GrayContext;
 import com.codeL.gray.dubbo.strategy.CompositeIndexedInvoker;
@@ -29,12 +28,10 @@ public class GrayRoute implements Router {
 
     private final URL url;
     private final Router router;
-    private final TypeConverterDelegate delegate;
 
-    public GrayRoute(URL url, Router router, TypeConverterDelegate delegate) {
+    public GrayRoute(URL url, Router router) {
         this.url = url;
         this.router = router;
-        this.delegate = delegate;
     }
 
     @Override
@@ -56,7 +53,7 @@ public class GrayRoute implements Router {
             }
             return router.route(invokers, url, invocation);
         }
-        CompositeIndexedInvoker<T> invoker = new Extractor(delegate).extract(invokers, url, invocation);
+        CompositeIndexedInvoker<T> invoker = new Extractor().extract(invokers, url, invocation);
         if (invoker == null) {
             if (router == null) {
                 return invokers;

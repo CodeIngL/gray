@@ -35,6 +35,11 @@ public class ReferenceBeanProcessor implements BeanDefinitionRegistryPostProcess
         }
     }
 
+    /**
+     * tip,if dubbo exists routerchain,this will be fix route
+     * @param beanFactory
+     * @param dubbor
+     */
     private void addParameters(ConfigurableListableBeanFactory beanFactory, String dubbor) {
         BeanDefinition bd = null;
         if (dubbor.startsWith("&")) {

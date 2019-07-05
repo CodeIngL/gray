@@ -10,19 +10,24 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author laihj
  * 2019/5/24 15:23
  */
-public class TypeConverterDelegate {
+public class TypeConverterRegistry {
 
-    private ConcurrentHashMap<TypeHolder, TypeConverter> register = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<TypeHolder, TypeConverter> register = new ConcurrentHashMap<>();
 
-    public TypeConverterDelegate(ConcurrentHashMap<TypeHolder, TypeConverter> register) {
-        this.register = register;
+    private static TypeConverterRegistry delegate = null;
+
+    private TypeConverterRegistry() {
     }
 
-    public TypeConverterDelegate() {
-    }
-
-    public void setRegister(ConcurrentHashMap<TypeHolder, TypeConverter> register) {
-        this.register = register;
+    public static TypeConverterRegistry getGlobalInstance() {
+        if (delegate == null) {
+            synchronized (TypeConverterRegistry.class) {
+                if (delegate != null) {
+                    delegate = new TypeConverterRegistry();
+                }
+            }
+        }
+        return delegate;
     }
 
     public void addTypeConverter(TypeHolder typeHolder, TypeConverter converter) {

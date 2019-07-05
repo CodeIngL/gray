@@ -9,6 +9,7 @@ package com.codeL.gray.common.convert;
  * 2019/5/24 15:23
  */
 public interface TypeConverter<S, T> {
+    
     T convert(S source);
 
     default boolean isEmpty(T t) {
