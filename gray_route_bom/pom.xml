@@ -8,36 +8,6 @@
     <artifactId>gray_route_bom</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <organization>
-        <name>servyou</name>
-    </organization>
-    <scm>
-    </scm>
-    <developers>
-        <developer>
-            <id>lhj</id>
-            <name>laihj</name>
-            <email>laihj@servyou.com.cn</email>
-            <organization>servyou</organization>
-            <roles>
-                <role>main developer</role>
-            </roles>
-        </developer>
-    </developers>
-
-
-    <distributionManagement>
-        <repository>
-            <id>xinxi</id>
-            <name>xinxi</name>
-            <url>http://10.64.1.13/nexus/content/repositories/xinxi</url>
-        </repository>
-        <snapshotRepository>
-            <id>xinxi-snapshot</id>
-            <name>xinxi-snapshot</name>
-            <url>http://10.64.1.13/nexus/content/repositories/xinxi-snapshot</url>
-        </snapshotRepository>
-    </distributionManagement>
 
     <dependencyManagement>
         <dependencies>
