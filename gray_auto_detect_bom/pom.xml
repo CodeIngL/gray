@@ -11,9 +11,6 @@
 
     <artifactId>gray_auto_detect_bom</artifactId>
     <packaging>pom</packaging>
-    <organization>
-        <name>servyou</name>
-    </organization>
     <modules>
         <module>gray_auto_dubbo</module>
         <module>gray_auto_jms_p</module>
@@ -22,31 +19,6 @@
     </modules>
     <scm>
     </scm>
-    <developers>
-        <developer>
-            <id>lhj</id>
-            <name>laihj</name>
-            <email>laihj@servyou.com.cn</email>
-            <organization>servyou</organization>
-            <roles>
-                <role>main developer</role>
-            </roles>
-        </developer>
-    </developers>
-
-
-    <distributionManagement>
-        <repository>
-            <id>xinxi</id>
-            <name>xinxi</name>
-            <url>http://10.64.1.13/nexus/content/repositories/xinxi</url>
-        </repository>
-        <snapshotRepository>
-            <id>xinxi-snapshot</id>
-            <name>xinxi-snapshot</name>
-            <url>http://10.64.1.13/nexus/content/repositories/xinxi-snapshot</url>
-        </snapshotRepository>
-    </distributionManagement>
 
     <dependencyManagement>
         <dependencies>
